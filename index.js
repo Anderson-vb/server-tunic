@@ -1,9 +1,27 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
+const port = process.env.PORT  || 3000;
 
-// Port
-const PORT = process.env.PORT || 5050;
+app.use(express.json())
+app.use(cors());
 
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`)
-})
+let posts = [];
+
+app.get('/', (req, res) => {
+  res.json(posts)
+});
+
+app.post('/', (req, res) => {
+  const newPost = {
+    id: req.body.id,
+    title: req.body.title,
+    content: req.body.content
+  }
+  posts = posts.concat(newPost);
+  res.json(newPost);
+});
+
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`)
+});
